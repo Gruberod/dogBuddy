@@ -1,0 +1,39 @@
+.align-right {
+    align-content: flex-end;
+    display: flex;
+    flex-direction: row;
+}
+
+.align-left {
+    align-content: flex-start;
+    display: flex;
+    flex-direction: row;
+}
+
+.user-name {
+    margin-right: 10px;
+}
+
+.conversation-box-me {
+    display: flex;
+    width: 300px;
+    background-color: #F1F1F1;
+}
+
+.conversation-box-other {
+    display: flex;
+    width: 300px;
+    background-color: #DEE8E9;
+}
+
+.text-me {
+    padding: 15px;
+    font-size: 13px;
+    color: gray;
+}
+
+.text-other {
+    font-weight: bolder;
+    padding: 15px;
+    font-size: 13px;
+}

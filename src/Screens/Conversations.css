@@ -1,0 +1,35 @@
+.conversations-header {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 30px;
+    color: dimgray;
+}
+
+.conversations-item {
+    margin-bottom: 15px;
+}
+
+.conversations-input-section {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.conversations-input {
+    width: 380px;
+    height: 120px;
+    margin: 20px;
+    border-radius: 2px;
+    justify-content: flex-start;
+}
+
+.conversations-btn {
+    background-color: #FF6F00;
+    color: white;
+    font-size: 15px;
+    font-family: "Gill Sans";
+    margin-top: 10px;
+    border-radius: 3px;
+    padding: 10px;
+    margin-right: 20px;
+}
