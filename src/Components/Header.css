@@ -1,0 +1,11 @@
+.header-item {
+    font-size: 15px;
+    color: dimgray;
+}
+
+.header-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    align-self: flex-start;
+}

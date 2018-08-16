@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Login } from '../Screens/Login'
 import { SignUp } from '../Screens/SignUp'
 import { Messages } from '../Screens/Messages'
-import {Conversations} from "../Screens/Conversations";
+import {Conversations} from '../Screens/Conversations'
 
 import {Route} from 'react-router-dom'
 
