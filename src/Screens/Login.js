@@ -1,16 +1,19 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
+import { Header } from '../Components/Header'
 import './Login.css';
 
 
 export class Login extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            userName: 'alcot@dogbuddy.io',
-            password: '123qweasd'
+            userName: 'abel@dogbuddy.io',
+            password: '123qweasd',
+            status: 200
         }
     }
 
+    // Saves credential into state
     handleNameInputChange = (event) => {
         this.setState({userName: event.target.value});
     }
@@ -19,33 +22,51 @@ export class Login extends Component {
         this.setState({password: event.target.value});
     }
 
+    // Verifying credentials against backend DB
     verifyCredentials = async () => {
-        const {userName, password} = this.state
+        const {userName, password} = this.state;
         const authResponse = await fetch('/api/rest/authenticate/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username: userName, password: password})})
+            body: JSON.stringify({username: userName, password: password})
+        })
 
-        const token = await authResponse.json()
-        localStorage.setItem('token', token.token)
-        console.log("token-----------" + token.token)
-        try {
-            const meResponse = await fetch('/api/rest/user/', {
-                method: 'GET',
-                headers: {'Authorization':`Token${{token}}`}
-            })
-            const me = await meResponse.json()
-            console.log("response-------------"+ authResponse)
-            console.log(me)
-        } catch (e) {
-            console.log(e)
-        }
+        this.setState({
+            status: authResponse.status
+        })
+
+        const token = await authResponse.json();
+
+        // Saves token into local storage to make it available throughout the app until user logs out
+        localStorage.setItem('token', token.token);
+
+        const getCurrentUser = await fetch('/api/rest/user/', {
+            method: 'GET',
+            headers: {'Authorization':`Token ${token.token}`}
+        })
+        const currentUser = await getCurrentUser.json();
+
+        // Saves current user into local storage to make it available throughout the app until user logs out
+        localStorage.setItem('user', currentUser.name);
 
     }
 
+    // Handle invalid credentials case
+    handleOnClickLogin = async() => {
+        await this.verifyCredentials()
+        if (this.state.status === 200) {
+            this.props.history.push(`/messages`)
+        } else {
+            return
+        }
+    }
+
     render() {
+        // Ensures user is informed in case of validation issue
+        const error = this.state.status === 200 ? <p></p> : <p>Invalid credentials, please try again!</p>
         return (
             <div className="wrapper">
+                <Header items={[{title: 'Login', path: '/'}, {title: 'Sign Up', path: '/signup'}]} {...this.props} />
                 <p className="login-header">Welcome back!</p>
                 <p className="sub-header">Please Login</p>
                 <input
@@ -56,15 +77,22 @@ export class Login extends Component {
                     onChange={this.handleNameInputChange}/>
                 <input
                     className="input"
-                    type="text"
+                    type="password"
                     name="password"
+
                     placeholder="Enter password"
                     onChange={this.handlePasswordInputChange}/>
+                {error}
                 <button
+                    type='button'
                     className="login-btn"
-                    onClick={this.verifyCredentials}>Login
+                    onClick={this.handleOnClickLogin}
+                >
+                    Log In
                 </button>
             </div>
-        );
+        )
     }
 }
+
+export default Login

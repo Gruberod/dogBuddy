@@ -1,16 +1,22 @@
 .align-right {
-    align-content: flex-end;
     display: flex;
     flex-direction: row;
+    margin-left: 20%;
+    margin-right: -20%;
 }
 
 .align-left {
-    align-content: flex-start;
     display: flex;
     flex-direction: row;
+    margin-left: -20%;
+    margin-right: 20%;
 }
 
-.user-name {
+.user-name-me {
+    margin-left: 10px;
+}
+
+.user-name-friend {
     margin-right: 10px;
 }
 
@@ -20,7 +26,7 @@
     background-color: #F1F1F1;
 }
 
-.conversation-box-other {
+.conversation-box-friend {
     display: flex;
     width: 300px;
     background-color: #DEE8E9;
@@ -32,8 +38,26 @@
     color: gray;
 }
 
-.text-other {
+.text-friend {
     font-weight: bolder;
     padding: 15px;
     font-size: 13px;
+}
+
+.arrow-right {
+    width: 0;
+    height: 0;
+    margin-top: 18px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 16px solid #F1F1F1;
+}
+
+.arrow-left {
+    width: 0;
+    height: 0;
+    margin-top: 18px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 16px solid #DEE8E9;
 }

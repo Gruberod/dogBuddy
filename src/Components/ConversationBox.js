@@ -1,23 +1,38 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import './ConverastionBox.css'
 
-
 export class ConverastionBox extends Component {
-
-
+    // Two versions of message boxes
     render() {
-        const boxStyle = this.props.who === "user" ? "conversation-box-me" : "conversation-box-other"
-        const textStyle = this.props.who === "user" ? "text-me" : "text-other"
-        const alignment = this.props.who === "user" ? "align-right" : "align-left"
+        const messageBoxMe = () => {
+            return (
+            <div className="align-right">
+                <div className="conversation-box-me">
+                    <p className="text-me">{this.props.messageText}</p>
+                </div>
+                <div className="arrow-right"></div>
+                <p className="user-name-me">{this.props.who}</p>
+            </div>
+            )}
 
-
-        return (
-            <div className={alignment}>
-                <p className="user-name">{this.props.who}</p>
-                <div className={boxStyle}>
-                    <p className={textStyle}>Bacon ipsum dolor amet spare ribs sirloin tenderloin, short ribs ground round tongue pork loin jerky. Pig porchetta bacon ball tip fatback. Drumstick sirloin cupim fatback tail, jowl ribeye rump corned beef venison turkey chuck salami tri-tip boudin. Meatloaf ham bacon ham hock short ribs turkey turducken chicken beef rump venison andouille tongue jerky.</p>
+        const messageBoxFriend = () => {
+            return (
+            <div className="align-left">
+                <p className="user-name-friend">{this.props.who}</p>
+                <div className="arrow-left"></div>
+                <div className="conversation-box-friend" >
+                    <p className="text-friend">{this.props.messageText}</p>
                 </div>
             </div>
-        );
+            )}
+
+        // Decides which kind of box should returm based on sender
+        const boxStyle = this.props.who === this.props.userName ? messageBoxMe() : messageBoxFriend()
+
+        return (
+            <div>
+                {boxStyle}
+            </div>
+        )
     }
 }

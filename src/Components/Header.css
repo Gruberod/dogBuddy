@@ -1,11 +1,21 @@
-.header-item {
-    font-size: 15px;
+.header-item-active {
+    font-size: 17px;
+    color: #F79003;
+    border: none;
+    margin: 10px;
+    background-color: transparent;
+}
+
+.header-item-inactive {
+    font-size: 17px;
     color: dimgray;
+    border: none;
+    margin: 10px;
+    background-color: transparent;
 }
 
 .header-wrapper {
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
-    align-self: flex-start;
+    align-self: flex-end;
 }

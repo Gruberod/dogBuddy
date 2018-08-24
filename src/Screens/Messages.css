@@ -6,4 +6,21 @@
 .messages-header {
     font-size: 30px;
     font-weight: bolder;
+    color: dimgray;
 }
+
+.withoutBackground {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end;
+}
+
+.withBackground {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    background-color: lightgray;
+    width: 100%;
+    padding: 8px;
+}
+

@@ -16,21 +16,16 @@
 }
 
 .input {
-    border: 1px solid gray;
-    border-radius: 5px;
-    width: 30em;
-    height: 3em;
-    margin: 1em;
-    font-family: "Gill Sans";
+    padding-left: 10px;
+    font-size: 15px;
 }
 
 .login-btn {
     background-color: #FF6F00;
     color: white;
     font-size: 15px;
-    width: 20em;
-    height: 3em;
-    font-family: "Gill Sans";
+    width: 30%;
+    padding: 12px;
     margin-top: 10px;
     border-radius: 3px;
 }
