@@ -1,12 +1,12 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme';
-import { Login } from './Login'
+import { SignUp } from './SignUp'
 
-describe('Login page', () => {
+describe('Sign Up page', () => {
 
-    it('Should render Login page', () => {
+    it('Should render SignUp page', () => {
         // when
-        const wrapper = shallow(<Login history={history} />)
+        const wrapper = shallow(<SignUp history={history} />)
         const paragraphs = wrapper.find('p')
         const button = wrapper.find('button')
         const inputs = wrapper.find('input')
@@ -14,32 +14,34 @@ describe('Login page', () => {
         // then
         expect(paragraphs).toHaveLength(3)
         expect(button).toHaveLength(1)
-        expect(inputs).toHaveLength(2)
+        expect(inputs).toHaveLength(3)
     })
 
-    it('should verify user credential', () => {
+    it('should create new user', () => {
         global.localStorage = {
             setItem: jest.fn()
         }
         const history = {
             push: jest.fn()
         }
+        const testUser = {
+            email:"est@test.com",
+            password:"test123",
+            name:"test user"
+        }
 
         // GIVEN
-        const credentials = {
-            "body": "{\"username\":\"abel@dogbuddy.io\",\"password\":\"123qweasd\"}",
+        const userDetails = {
+            "body": "{\"email\":\"test@test.com\",\"password\":\"test123\",\"name\":\"test user\"}",
             "headers": {
                 "Content-Type": "application/json"
             },
             "method": "POST"
         }
 
-        const expectedOptions = {
-        }
-
         const mockResponse = {
             status: 200,
-            json: () => Promise.resolve(credentials)
+            json: () => Promise.resolve(userDetails)
         }
 
         global.fetch = jest.fn().mockImplementation(() => {
@@ -47,12 +49,10 @@ describe('Login page', () => {
         })
 
         // WHEN
-        const wrapper = mount(<Login history={history} />)
-        wrapper.instance().handleOnClickLogin()
+        const wrapper = mount(<SignUp email="est@test.com" password="test123" name="test user" history={history} />)
+        wrapper.instance().signupUser(testUser)
 
         // THEN
-        expect(global.fetch).toBeCalledWith('/api/rest/authenticate/', credentials)
-        expect(history.push).notToBeCalled
-        // expect(history.push).toBeCalledWith('/messages')
+        expect(global.fetch).toBeCalledWith('//api/rest/signup/', userDetails)
     })
 })

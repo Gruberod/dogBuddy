@@ -30,32 +30,41 @@ export class SignUp extends Component {
     // Creates new user in DB
     signupUser = async () => {
         const {userName, userEmail, password} = this.state;
-        const authResponse = await fetch('/api/rest/signup/', {
+        try {
+            const authResponse = await fetch('/api/rest/signup/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email: userEmail, password: password, name: userName})
-        })
+            })
 
-        this.setState({
-            status: authResponse.status
-        })
+            this.setState({
+                status: authResponse.status
+            })
+        } catch (e) {
+            console.log("Unable to sign up user")
+        }
     }
 
     // Verify newly created user credentials -> this doesn't work! I am afraid token is not generated for new users...
     verifyCredentials = async () => {
         const {userName, password} = this.state;
-        const authResponse = await fetch('/api/rest/authenticate/', {
+
+        try {
+            const authResponse = await fetch('/api/rest/authenticate/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: userName, password: password})
-        })
+            })
 
-        this.setState({
-            status: authResponse.status
-        })
+            this.setState({
+                status: authResponse.status
+            })
 
-        const token = await authResponse.json();
-        localStorage.setItem('token', token.token);
+            const token = await authResponse.json();
+            localStorage.setItem('token', token.token);
+        } catch (e) {
+            console.log("Unable to verify credentials")
+        }
     }
 
     // Awaits creation of a new user, than verifies credentials and if everything goes well passes user into the app

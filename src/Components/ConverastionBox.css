@@ -1,35 +1,35 @@
 .align-right {
     display: flex;
     flex-direction: row;
-    margin-left: 20%;
-    margin-right: -20%;
 }
 
 .align-left {
     display: flex;
     flex-direction: row;
-    margin-left: -20%;
-    margin-right: 20%;
 }
 
 .user-name-me {
     margin-left: 10px;
+    font-family: "Gill Sans";
 }
 
 .user-name-friend {
     margin-right: 10px;
+    font-family: "Gill Sans";
 }
 
 .conversation-box-me {
     display: flex;
-    width: 300px;
+    width: 200px;
     background-color: #F1F1F1;
+    font-family: "Gill Sans";
 }
 
 .conversation-box-friend {
     display: flex;
-    width: 300px;
+    width: 200px;
     background-color: #DEE8E9;
+    font-family: "Gill Sans";
 }
 
 .text-me {
@@ -61,3 +61,24 @@
     border-bottom: 8px solid transparent;
     border-right: 16px solid #DEE8E9;
 }
+
+@media (min-width: 520px){
+    .align-right {
+        margin-left: 20%;
+        margin-right: -20%;
+    }
+
+    .align-left {
+        margin-left: -20%;
+        margin-right: 20%;
+    }
+
+    .conversation-box-me {
+        width: 300px;
+    }
+
+    .conversation-box-friend {
+        width: 300px;
+    }
+}
+

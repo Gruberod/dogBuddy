@@ -9,7 +9,8 @@ export class Login extends Component {
         this.state = {
             userName: 'abel@dogbuddy.io',
             password: '123qweasd',
-            status: 200
+            status: 200,
+            data: null
         }
     }
 
@@ -25,20 +26,27 @@ export class Login extends Component {
     // Verifying credentials against backend DB
     verifyCredentials = async () => {
         const {userName, password} = this.state;
-        const authResponse = await fetch('/api/rest/authenticate/', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username: userName, password: password})
-        })
+        try {
+            const authResponse = await fetch('/api/rest/authenticate/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: userName, password: password})
+            })
 
-        this.setState({
-            status: authResponse.status
-        })
+            const authResponseData = await authResponse.json();
+            this.setState({
+                status: authResponse.status,
+                data: authResponseData
+            })
+        } catch (e) {
+            console.log("Unable to verify credentials")
+        }
 
-        const token = await authResponse.json();
+        const token = this.state.data
 
         // Saves token into local storage to make it available throughout the app until user logs out
         localStorage.setItem('token', token.token);
+
 
         const getCurrentUser = await fetch('/api/rest/user/', {
             method: 'GET',
@@ -48,7 +56,6 @@ export class Login extends Component {
 
         // Saves current user into local storage to make it available throughout the app until user logs out
         localStorage.setItem('user', currentUser.name);
-
     }
 
     // Handle invalid credentials case

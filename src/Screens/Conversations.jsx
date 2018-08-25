@@ -7,7 +7,7 @@ export class Conversations extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            newMessage: null,
+            newMessage: "",
             messages: [],
             friendName: null
         }
@@ -23,33 +23,37 @@ export class Conversations extends Component {
         const conversationId = this.props.match.params.id
         const token = localStorage.getItem('token')
         const currentUser = localStorage.getItem('user')
-        const listOfMessages = await fetch(`/api/rest/conversations/${conversationId}`, {
+
+        try {
+            const listOfMessages = await fetch(`/api/rest/conversations/${conversationId}`, {
             method: 'GET',
             headers: {'Authorization':`Token ${token}`}
-        })
-
-        if (listOfMessages) {
-            const listOfMessagesTransformed = await listOfMessages.json();
-            console.log(listOfMessagesTransformed.messages)
-            const messages = listOfMessagesTransformed.messages.map( message => {
-                if (message.sender.name !== currentUser) {
-                    this.setState({
-                        friendName: message.sender.name
-                    })
-                }
-                return (
-                    <div className='conversations-item'>
-                        <ConverastionBox
-                            key={message.text}
-                            who={message.sender.name}
-                            userName={currentUser}
-                            messageText={message.text} />
-                    </div>
-                )
             })
-            this.setState({messages})
-        } else {
-            return <p>No messages found</p>
+
+            if (listOfMessages) {
+                const listOfMessagesTransformed = await listOfMessages.json();
+                console.log(listOfMessagesTransformed.messages)
+                const messages = listOfMessagesTransformed.messages.map( message => {
+                    if (message.sender.name !== currentUser) {
+                        this.setState({
+                            friendName: message.sender.name
+                        })
+                    }
+                    return (
+                        <div className='conversations-item' key={message.text}>
+                            <ConverastionBox
+                                who={message.sender.name}
+                                userName={currentUser}
+                                messageText={message.text} />
+                        </div>
+                    )
+                })
+                this.setState({messages})
+            } else {
+                return <p>No messages found</p>
+            }
+        } catch (e) {
+            console.log("Unable to get messages for user")
         }
     }
 
@@ -61,16 +65,20 @@ export class Conversations extends Component {
     uploadMessage = async () => {
         const conversationId = this.props.match.params.id
         const token = localStorage.getItem('token')
-        await fetch(`/api/rest/conversations/${conversationId}/`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Token ${token}`},
-            body: JSON.stringify({text: this.state.newMessage})
-        })
-        this.renderMessages()
+        try {
+                await fetch(`/api/rest/conversations/${conversationId}/`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Authorization': `Token ${token}`},
+                body: JSON.stringify({text: this.state.newMessage})
+            })
+            this.renderMessages()
+        } catch (e) {
+            console.log("Unable to upload message")
+        }
     }
 
     render() {
-        const friendName = this.state.friendName
+        const friendName = this.state.friendName ? this.state.friendName : localStorage.getItem('friendName')
         return (
             <div className="wrapper">
                 <Header

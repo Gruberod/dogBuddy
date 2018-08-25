@@ -15,28 +15,32 @@ export class Messages extends Component {
     async componentDidMount() {
         const token = localStorage.getItem('token')
 
-        const getMessagesForUser = await fetch('/api/rest/conversations/', {
-            method: 'GET',
-            headers: {'Authorization':`Token ${token}`}
-        });
-        const messagesForUser = await getMessagesForUser.json();
+        try {
+            const getMessagesForUser = await fetch('/api/rest/conversations/', {
+                method: 'GET',
+                headers: {'Authorization': `Token ${token}`}
+            });
+            const messagesForUser = await getMessagesForUser.json();
 
-        if (messagesForUser !== undefined) {
-            const messages = messagesForUser.map(message => {
-                if (!message.last_message) {
-                    return
-                }
-                return (
-                    <Message
-                        key={message.id}
-                        messageText={message.last_message.text}
-                        name={message.last_message.sender.name}
-                        messagePath={`/conversations/${message.id}`}
-                        {...this.props}
-                    />
-                )
-            })
-            this.setState({messages})
+            if (messagesForUser !== undefined) {
+                const messages = messagesForUser.map(message => {
+                    if (!message.last_message) {
+                        return
+                    }
+                    return (
+                        <Message
+                            key={message.id}
+                            messageText={message.last_message.text}
+                            name={message.last_message.sender.name}
+                            messagePath={`/conversations/${message.id}`}
+                            {...this.props}
+                        />
+                    )
+                })
+                this.setState({messages})
+            }
+        } catch (e) {
+        console.log("Unable to get messages for user")
         }
     }
 

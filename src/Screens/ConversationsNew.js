@@ -19,16 +19,20 @@ export class ConversationsNew extends Component {
     createConversation = async (friendId) => {
         const token = localStorage.getItem('token')
 
-        const createResponse = await fetch('/api/rest/conversations/', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Token ${token}`},
-            body: JSON.stringify({friend_id: friendId})
-        })
-        const response = await createResponse.json()
+        try {
+            const createResponse = await fetch('/api/rest/conversations/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Authorization': `Token ${token}`},
+                body: JSON.stringify({friend_id: friendId})
+            })
+            const response = await createResponse.json()
 
-        this.setState({
-            conversationId: response.id
-        })
+            this.setState({
+                conversationId: response.id
+            })
+        } catch (e) {
+            console.log("Unable to create conversation")
+        }
     }
 
     // Adds new message into created conversation
@@ -36,12 +40,16 @@ export class ConversationsNew extends Component {
         const conversationId = this.state.conversationId
 
         const token = localStorage.getItem('token')
-        await fetch(`/api/rest/conversations/${conversationId}/`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Token ${token}`},
-            body: JSON.stringify({text: this.state.newMessage})
-        })
-        this.props.history.push(`/conversations/${conversationId}/`)
+        try {
+                await fetch(`/api/rest/conversations/${conversationId}/`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Authorization': `Token ${token}`},
+                body: JSON.stringify({text: this.state.newMessage})
+            })
+            this.props.history.push(`/conversations/${conversationId}/`)
+        } catch (e) {
+            console.log("Unable to upload message")
+        }
     }
 
     handleButtonClick = async() => {

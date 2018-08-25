@@ -3,6 +3,7 @@
     font-weight: bold;
     margin: 30px;
     color: dimgray;
+    text-align: center;
 }
 
 .conversations-item {
@@ -16,7 +17,7 @@
 }
 
 .conversations-input {
-    width: 380px;
+    width: 250px;
     height: 100px;
     margin: 20px;
     border: 2px solid darkgrey;
@@ -25,6 +26,7 @@
     font-size: 15px;
     color: darkgrey;
     resize: none;
+    font-family: "Gill Sans";
 }
 
 .conversations-btn {
@@ -36,4 +38,10 @@
     border-radius: 3px;
     padding: 10px;
     margin-right: 20px;
+}
+
+@media (min-width: 520px) {
+    .conversations-input {
+        width: 380px;
+    }
 }

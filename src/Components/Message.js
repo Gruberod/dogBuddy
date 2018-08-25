@@ -6,6 +6,20 @@ export class Message extends Component {
 
     render() {
             const path = this.props.messagePath
+        // const messageMobile = () => {
+        //     return (
+        //         <div className="message-wrappe-mobiler">
+        //             <div className="name-mobile">{this.props.name}</div>
+        //             <div className="message-mobile">
+        //                 <p className="message-text-mobile">{this.props.messageText}</p>
+        //                 <button
+        //                     className="message-btn-mobile"
+        //                     onClick={() => this.props.history.push(path)}
+        //                 >Reply</button>
+        //             </div>
+        //         </div>
+        //     )}
+
         return (
             <div className="message-wrapper">
                 <div className="name">{this.props.name}</div>
