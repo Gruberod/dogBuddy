@@ -5,19 +5,19 @@ import { Login } from './Login'
 describe('Login page', () => {
 
     it('Should render Login page', () => {
-        // when
+        // WHEN
         const wrapper = shallow(<Login history={history} />)
         const paragraphs = wrapper.find('p')
         const button = wrapper.find('button')
         const inputs = wrapper.find('input')
 
-        // then
+        // THEN
         expect(paragraphs).toHaveLength(3)
         expect(button).toHaveLength(1)
         expect(inputs).toHaveLength(2)
     })
 
-    it('should verify user credential', () => {
+    it('should verify correct user credential', async () => {
         global.localStorage = {
             setItem: jest.fn()
         }
@@ -26,7 +26,7 @@ describe('Login page', () => {
         }
 
         // GIVEN
-        const credentials = {
+        const correctCredentials = {
             "body": "{\"username\":\"abel@dogbuddy.io\",\"password\":\"123qweasd\"}",
             "headers": {
                 "Content-Type": "application/json"
@@ -34,12 +34,9 @@ describe('Login page', () => {
             "method": "POST"
         }
 
-        const expectedOptions = {
-        }
-
         const mockResponse = {
             status: 200,
-            json: () => Promise.resolve(credentials)
+            json: () => Promise.resolve(correctCredentials)
         }
 
         global.fetch = jest.fn().mockImplementation(() => {
@@ -48,11 +45,53 @@ describe('Login page', () => {
 
         // WHEN
         const wrapper = mount(<Login history={history} />)
-        wrapper.instance().handleOnClickLogin()
+        const paragraphs = wrapper.find('p')
+        await wrapper.instance().handleOnClickLogin()
 
         // THEN
-        expect(global.fetch).toBeCalledWith('/api/rest/authenticate/', credentials)
-        expect(history.push).notToBeCalled
-        // expect(history.push).toBeCalledWith('/messages')
+        expect(global.fetch).toBeCalledWith('/api/rest/authenticate/', correctCredentials)
+        expect(paragraphs.at(2).text()).toBe("")
+        expect(history.push).toBeCalledWith('/messages')
+    })
+
+    it('should verify incorrect user credential', async () => {
+        global.localStorage = {
+            setItem: jest.fn()
+        }
+        const history = {
+            push: jest.fn()
+        }
+
+        // GIVEN
+        const invalidCredentials = {
+            "body": "{\"username\":\"random@test.io\",\"password\":\"password\"}",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "method": "POST"
+        }
+
+        const mockResponse = {
+            status: 400,
+            json: () => Promise.resolve(invalidCredentials)
+        }
+
+        global.fetch = jest.fn().mockImplementation(() => {
+            return new Promise((resolve, reject) => resolve(mockResponse))
+        })
+
+        // WHEN
+        const wrapper = mount(<Login history={history} />)
+        const paragraphs = wrapper.find('p')
+        wrapper.setState({
+            userName:"random@test.io",
+            password: "password",
+        })
+        await wrapper.instance().handleOnClickLogin()
+
+        // THEN
+        expect(global.fetch).toBeCalledWith('/api/rest/authenticate/', invalidCredentials)
+        expect(history.push).toHaveBeenCalledTimes(0)
+        expect(paragraphs.at(2).text()).toBe("Invalid credentials, please try again!")
     })
 })

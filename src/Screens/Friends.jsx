@@ -36,7 +36,6 @@ export class Friends extends Component {
 
     render() {
         const listOfFriends = this.state.friends.map(friend => {
-            console.log(friend.id)
             return (
                 <div className="friends-box" key={friend.id}>
                     <p className="friends-name">{friend.name}</p>

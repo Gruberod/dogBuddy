@@ -32,7 +32,7 @@ export class Conversations extends Component {
 
             if (listOfMessages) {
                 const listOfMessagesTransformed = await listOfMessages.json();
-                console.log(listOfMessagesTransformed.messages)
+
                 const messages = listOfMessagesTransformed.messages.map( message => {
                     if (message.sender.name !== currentUser) {
                         this.setState({

@@ -5,13 +5,13 @@ import { SignUp } from './SignUp'
 describe('Sign Up page', () => {
 
     it('Should render SignUp page', () => {
-        // when
+        // WHEN
         const wrapper = shallow(<SignUp history={history} />)
         const paragraphs = wrapper.find('p')
         const button = wrapper.find('button')
         const inputs = wrapper.find('input')
 
-        // then
+        // THEN
         expect(paragraphs).toHaveLength(3)
         expect(button).toHaveLength(1)
         expect(inputs).toHaveLength(3)
@@ -25,7 +25,7 @@ describe('Sign Up page', () => {
             push: jest.fn()
         }
         const testUser = {
-            email:"est@test.com",
+            email:"test@test.com",
             password:"test123",
             name:"test user"
         }
@@ -49,10 +49,18 @@ describe('Sign Up page', () => {
         })
 
         // WHEN
-        const wrapper = mount(<SignUp email="est@test.com" password="test123" name="test user" history={history} />)
+        const wrapper = mount(<SignUp history={history} />)
+        const paragraphs = wrapper.find('p')
+        wrapper.setState({
+            userEmail:"test@test.com",
+            password: "test123",
+            userName: "test user"
+        })
         wrapper.instance().signupUser(testUser)
 
+
         // THEN
-        expect(global.fetch).toBeCalledWith('//api/rest/signup/', userDetails)
+        expect(global.fetch).toBeCalledWith('/api/rest/signup/', userDetails)
+        expect(paragraphs.at(2).text()).toBe("")
     })
 })
